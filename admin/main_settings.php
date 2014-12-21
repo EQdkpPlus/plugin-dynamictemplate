@@ -50,7 +50,7 @@ class dynamictemplate_main_settings extends page_generic
 			$intSortID = $id;
 
 			$intActive = (isset($val['active']) && (int)$val['active']) ? 1 : 0;
-			$strName = $val['name'];
+			$strName = strtoupper($val['name']);
 			$strValue = $val['value'];
 			
 			$this->pdh->put('dynamictemplate', 'add', array($val['id'], $intSortID, $intActive, $strName, $strValue));
@@ -58,7 +58,8 @@ class dynamictemplate_main_settings extends page_generic
 		}
 	}
 	$this->pdh->process_hook_queue();
-	$this->pdc->del_prefix('hptt_dynamictemplate');
+	//$this->pdc->del_prefix('hptt_dynamictemplate');
+	$this->pdc->del('pdh_dynamictemplate_table');
 	
     // Success message
 	$this->core->message($this->user->lang('pk_succ_saved'), $this->user->lang('success'), 'green');

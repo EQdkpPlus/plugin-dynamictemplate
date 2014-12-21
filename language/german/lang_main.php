@@ -15,7 +15,10 @@ $lang = array(
   // main_settings.php
   'dynamictemplate_main_settings'		=> 'Haupteinstellungen',
   'dynamictemplate_plugin_not_installed'	=> 'Das Dynamic Template-Plugin ist nicht installiert.',
-  'dynamictemplate_customcheck_info'		=> 'Die hier erstellten DT-Module benötigen ein DT fähiges Template.',
+  'dynamictemplate_customcheck_info'		=> 'Die hier erstellten DT-Module können an jeder Stelle deines Templates eingebunden werden,
+  							<br> mithilfe der Variable <b>{DYNAMICTEMPLATE_***}</b> <em>(wobei *** der angegebene
+  							Modul-Name ist)</em>. Im <a href="http://eqdkp-plus.eu/wiki">EQdkp-WiKi</a>
+  							finden sie weitere Infos und eine Anleitung.',
   'dynamictemplate_delete_selected_fields'	=> 'Ausgewählte Module löschen',
   'dynamictemplate_add_field'			=> 'Neues Modul hinzufügen',
   'dynamictemplate_delete_field'		=> 'Modul löschen',
