@@ -25,7 +25,7 @@ if (!class_exists('dynamictemplate_portal_hook'))
 		$row = $this->pdh->get('dynamictemplate', 'id', array($id));
 		
 		if($row['active']){
-			$this->tpl->assign_var('DYNAMICTEMPLATE_'.$row['name'], $row['value']);
+			$this->tpl->assign_var('DYNAMICTEMPLATE_'.$row['name'], $this->tpl->compileString($row['value']));
 		}
 	}
         
