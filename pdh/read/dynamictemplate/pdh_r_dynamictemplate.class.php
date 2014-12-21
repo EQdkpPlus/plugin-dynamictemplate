@@ -32,9 +32,7 @@ if (!class_exists('pdh_r_dynamictemplate'))
     public function reset()
     {
 		$this->pdc->del('pdh_dynamictemplate_table');
-		//$this->pdc->del('pdh_dynamictemplate_combined');
 		$this->data = NULL;
-		//$this->combined = NULL;
     }
 
 
@@ -48,7 +46,6 @@ if (!class_exists('pdh_r_dynamictemplate'))
     {
       // try to get from cache first
       $this->data = $this->pdc->get('pdh_dynamictemplate_table');
-      //$this->combined = $this->pdc->get('pdh_dynamictemplate_combined');
       
       if($this->data !== NULL)
       {
@@ -57,7 +54,6 @@ if (!class_exists('pdh_r_dynamictemplate'))
 
       // empty array as default
       $this->data = array();
-      //$this->combined = array();
 
       // read all dynamictemplate entries from db
       $sql = 'SELECT * FROM `__dynamictemplate` ORDER BY sortid ASC;';
@@ -79,7 +75,6 @@ if (!class_exists('pdh_r_dynamictemplate'))
 
       // add data to cache
       $this->pdc->put('pdh_dynamictemplate_table', $this->data, null);
-      //$this->pdc->put('pdh_dynamictemplate_combined', $this->combined, null);
 
       return true;
     }
