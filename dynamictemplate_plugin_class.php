@@ -84,16 +84,15 @@ class dynamictemplate extends plugin_generic
 
 
   /**
-    * pre_uninstall
-    * Define uninstallation
+    * post_uninstall
+    * Define Post Uninstall
     */
-  public function pre_uninstall()
-  {
+  public function post_uninstall(){
     // include SQL data for uninstallation
     include($this->root_path.'plugins/dynamictemplate/includes/sql.php');
-
+ 
     for ($i = 1; $i <= count($dynamictemplateSQL['uninstall']); $i++)
-      $this->add_sql(SQL_UNINSTALL, $dynamictemplateSQL['uninstall'][$i]);
+      $this->db->query($dynamictemplateSQL['uninstall'][$i]);
   }
 
 
