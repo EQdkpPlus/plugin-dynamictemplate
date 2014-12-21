@@ -42,7 +42,7 @@ function add_row(){
 			<th width="10px"></th>
 			<th width="20px;"></th>
 			<th style="min-width: 30px;width: 30px;">{L_dynamictemplate_active}</th>
-			<th style="min-width: 200px;width: 200px;">{L_dynamictemplate_name}</th>
+			<th style="min-width: 310px;width: 310px;">{L_dynamictemplate_name}</th>
 			<th>{L_dynamictemplate_value}</th>
 		</tr>
 		</thead>
@@ -54,7 +54,7 @@ function add_row(){
 			<td align="center"><input type="hidden" name="field[{field_row.KEY}][id]" value="{field_row.KEY}" class="dynamictemplate_id"/><i class="fa fa-trash-o fa-lg" title="{L_dynamictemplate_delete_field}"  onclick="delete_row(this);"></i></td>
 			
 			<td><input type="checkbox" name="field[{field_row.KEY}][active]" value="1" {field_row.ACTIVE}/></td>
-			<td><input type="text" name="field[{field_row.KEY}][name]" value="{field_row.NAME}" class="input dynamictemplate_name" /></td>
+			<td>{DYNAMICTEMPLATE_<input type="text" name="field[{field_row.KEY}][name]" value="{field_row.NAME}" class="input dynamictemplate_name" />}</td>
 			<td><textarea name="field[{field_row.KEY}][value]" rows="4" class="input" style="height:{field_row.OPTIONS_HEIGHT}px;width: 97%;">{field_row.VALUE}</textarea></td>
 		</tr>
 		<!-- END field_row -->
@@ -75,7 +75,7 @@ function add_row(){
 		<td width="10px">#KEY</td>
 		<td align="center"><input type="hidden" name="field[KEY][id]" value="KEY" class="dynamictemplate_id" /><i class="fa fa-trash-o fa-lg" title="{L_delte}" onclick="delete_row(this);"></i></td>
 		<td><input type="checkbox" name="field[KEY][active]" value="1" /></td>
-		<td><input type="text" name="field[KEY][name]" value="" class="input dynamictemplate_name" style="width: 90%" /></td>
+		<td>{DYNAMICTEMPLATE_<input type="text" name="field[KEY][name]" value="" class="input dynamictemplate_name" style="width: 50%" />}</td>
 		<td><textarea name="field[KEY][value]" rows="4" class="input" style="height:{field_row.OPTIONS_HEIGHT}px;width: 97%;">{field_row.VALUE}</textarea></td>
 	</tr>
 </table>
