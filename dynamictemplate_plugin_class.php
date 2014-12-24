@@ -1,4 +1,23 @@
 <?php
+/*	Project:	EQdkp-Plus
+ *	Package:	DynamicTemplate Plugin
+ *	Link:		http://eqdkp-plus.eu
+ *
+ *	Copyright (C) 2006-2015 EQdkp-Plus Developer Team
+ *
+ *	This program is free software: you can redistribute it and/or modify
+ *	it under the terms of the GNU Affero General Public License as published
+ *	by the Free Software Foundation, either version 3 of the License, or
+ *	(at your option) any later version.
+ *
+ *	This program is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU Affero General Public License for more details.
+ *
+ *	You should have received a copy of the GNU Affero General Public License
+ *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 if (!defined('EQDKP_INC'))
 {
@@ -54,7 +73,7 @@ class dynamictemplate extends plugin_generic
     // ('a'/'u', Permission-Name, Enable? 'Y'/'N', Language string, array of user-group-ids that should have this permission)
     // Groups: 1 = Guests, 2 = Super-Admin, 3 = Admin, 4 = Member
 	$this->add_permission('a', 'main', 'N', $this->user->lang('dynamictemplate_main_settings'), array(2,3));
-	
+
     // -- PDH Modules -------------------------------------
 	$this->add_pdh_read_module('dynamictemplate');
 	$this->add_pdh_write_module('dynamictemplate');
@@ -90,7 +109,7 @@ class dynamictemplate extends plugin_generic
   public function post_uninstall(){
     // include SQL data for uninstallation
     include($this->root_path.'plugins/dynamictemplate/includes/sql.php');
- 
+
     for ($i = 1; $i <= count($dynamictemplateSQL['uninstall']); $i++)
       $this->db->query($dynamictemplateSQL['uninstall'][$i]);
   }
