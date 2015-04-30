@@ -19,36 +19,35 @@
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-if (!defined('EQDKP_INC'))
-{
+if (!defined('EQDKP_INC')){
   header('HTTP/1.0 404 Not Found');exit;
 }
 
 /*+----------------------------------------------------------------------------
   | dynamictemplate_portal_hook
   +--------------------------------------------------------------------------*/
-if (!class_exists('dynamictemplate_portal_hook'))
-{
+if (!class_exists('dynamictemplate_portal_hook')){
   class dynamictemplate_portal_hook extends gen_class
   {
 
-    public function portal()
-    {
-	// Deaktiviert die Warnung 'Dynamic Template-Plugin benötigt'		= HTML <!-- IF DYNAMICTEMPLATE --> <!-- ENDIF -->
-	  $this->tpl->assign_var('DYNAMICTEMPLATE', true);
-
-
-	$arrFields = $this->pdh->get('dynamictemplate', 'id_list', array());
-
-	foreach($arrFields as $id){
-		$row = $this->pdh->get('dynamictemplate', 'id', array($id));
-
-		if($row['active']){
-			$this->tpl->assign_var('DYNAMICTEMPLATE_'.$row['name'], $this->tpl->compileString($row['value']));
+    public function portal(){
+		// Deaktiviert die Warnung 'Dynamic Template-Plugin benötigt'		= HTML <!-- IF DYNAMICTEMPLATE --> <!-- ENDIF -->
+		$this->tpl->assign_var('DYNAMICTEMPLATE', true);
+		
+		
+		$arrModules = $this->pdh->get('dynamictemplate', 'id_list', array());
+		
+		foreach($arrModules as $id){
+			$arrModuleData = $this->pdh->get('dynamictemplate', 'id', array($id));
+			
+			if($arrModuleData['active']){
+				$arrModuleData['value'] = xhtml_entity_decode(htmlspecialchars_decode($arrModuleData['value']));
+				$this->tpl->assign_var('DYNAMICTEMPLATE_'.$arrModuleData['name'], $this->tpl->compileString($arrModuleData['value']));
+			}
 		}
-	}
-
+		
     } //end function
+
   } //end class
 } //end if class not exists
 ?>

@@ -3,7 +3,10 @@
 	var import_data;
 	
 	$(document).ready(function() {
-		
+		$('#dynamictemplate_form_table tbody').sortable({
+			cancel: '.not-sortable, input, .input, select',
+			cursor: 'pointer',
+		});
 	});
 	
 	function add_row(){

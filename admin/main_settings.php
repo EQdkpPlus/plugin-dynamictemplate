@@ -27,106 +27,86 @@ define('PLUGIN', 'dynamictemplate');
 $eqdkp_root_path = './../../../';
 include_once($eqdkp_root_path.'common.php');
 
-
 /*+----------------------------------------------------------------------------
   | dynamictemplate_main_settings
   +--------------------------------------------------------------------------*/
 class dynamictemplate_main_settings extends page_generic
 {
-
-  /**
-   * Constructor
-   */
-  public function __construct()
-  {
-    // plugin installed?
-    if (!$this->pm->check('dynamictemplate', PLUGIN_INSTALLED))
-      message_die($this->user->lang('dynamictemplate_plugin_not_installed'));
-
-    $handler = array(
-      'save' => array('process' => 'save', 'csrf' => true, 'check' => 'a_dynamictemplate_main'),
-    );
-    parent::__construct('a_dynamictemplate_main', $handler, array('dynamictemplate', 'name'), null, 'field_ids[]');
-
-    $this->process();
-  }
-
-
-  /**
-   * Save
-   * save the configuration
-   */
-  public function save()
-  {
-	if (count($this->in->getArray('field', 'raw')) > 0){
-		//Truncate field table
-		$this->pdh->put('dynamictemplate', 'truncate', array());
-
-		$id = 0;
-		foreach($this->in->getArray('field', 'raw') as $val){
-			if ($val['name'] == '') continue;
-
-			$intSortID = $id;
-
-			$intActive = (isset($val['active']) && (int)$val['active']) ? 1 : 0;
-			$strName = strtoupper($val['name']);
-			$strValue = $val['value'];
-
-			$this->pdh->put('dynamictemplate', 'add', array($val['id'], $intSortID, $intActive, $strName, $strValue));
-			$id++;
-		}
+	/**
+	 * Constructor
+	 */
+	public function __construct(){
+		// plugin installed?
+		if (!$this->pm->check('dynamictemplate', PLUGIN_INSTALLED)) message_die($this->user->lang('dynamictemplate_plugin_not_installed'));
+		
+		$handler = array(
+			'save'	=> array('process' => 'save', 'csrf' => true, 'check' => 'a_dynamictemplate_main'),
+		);
+		parent::__construct('a_dynamictemplate_main', $handler, array('dynamictemplate', 'name'), null, 'field_ids[]');
+		
+		$this->process();
 	}
-	$this->pdh->process_hook_queue();
-	$this->pdc->del('pdh_dynamictemplate_table');
-
-    // Success message
-	$this->core->message($this->user->lang('pk_succ_saved'), $this->user->lang('success'), 'green');
-  }
 
 
-  /**
-   * Display
-   * display the page
-   *
-   * @param    array  $messages   Array of Messages to output
-   */
-  public function display()
-  {
-	$this->tpl->add_js("
-		$(\"#dynamictemplate_form_table tbody\").sortable({
-			cancel: '.not-sortable, input, .input, select',
-			cursor: 'pointer',
-		});
-	", "docready");
+	/**
+	 * Save
+	 */
+	public function save(){
+		$arrModules = $this->in->getArray('module', 'raw');
+		$this->pdh->put('dynamictemplate', 'truncate');
+		
+		$intSortID = 0;
+		foreach($arrModules as $arrModuleData){
+			if($arrModuleData['name'] == '') continue;
+			
+			$intActive	= (isset($arrModuleData['active']) && (int)$arrModuleData['active']) ? 1 : 0;
+			$strName	= strtoupper($arrModuleData['name']);
+			$strValue	= htmlentities($arrModuleData['value'], ENT_QUOTES, 'UTF-8');
+			
+			$this->pdh->put('dynamictemplate', 'add', array($arrModuleData['id'], $intSortID, $intActive, $strName, $strValue));
+			$intSortID++;
+		}
+		
+		$this->pdh->process_hook_queue();
+		$this->pdc->del('pdh_dynamictemplate_table');
+		
+		// Success message
+		$this->core->message($this->user->lang('pk_succ_saved'), $this->user->lang('success'), 'green');
+	}
 
-	$this->confirm_delete($this->user->lang('dynamictemplate_confirm_delete_field'));
-	$this->jquery->selectall_checkbox('selall_fields', 'field_ids[]');
 
-	$arrFields = $this->pdh->get('dynamictemplate', 'id_list', array());
-
-	foreach($arrFields as $id){
-		$row = $this->pdh->get('dynamictemplate', 'id', array($id));
-
-		$this->tpl->assign_block_vars('field_row', array(
-			'KEY'				=> $row['id'],
-			'ACTIVE'			=> ($row['active']) ? 'checked="checked"' : '',
-			'NAME'				=> $row['name'],
-			'VALUE'				=> $row['value'],
+	/**
+	 * Display
+	 */
+	public function display(){
+		$this->confirm_delete($this->user->lang('dynamictemplate_confirm_delete_module'));
+		
+		$arrModuleIDs = $arrExportData = $this->pdh->get('dynamictemplate', 'id_list');
+		
+		foreach($arrModuleIDs as $key => $id){
+			$arrExportData[$key] = $arrModuleData = $this->pdh->get('dynamictemplate', 'id', array($id));
+			
+			$this->tpl->assign_block_vars('modules', array(
+				'KEY'				=> $arrModuleData['id'],
+				'ACTIVE'			=> ($arrModuleData['active']) ? 'checked="checked"' : '',
+				'NAME'				=> $arrModuleData['name'],
+				'VALUE'				=> xhtml_entity_decode(htmlspecialchars_decode($arrModuleData['value'])),
+			));
+		}
+		
+		$this->tpl->assign_vars(array(
+			'KEY'			=> max($arrModuleIDs)+1,
+			'EXPORT_DATA'	=> json_encode($arrExportData, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE),
+		));
+		
+		// -- EQDKP ---------------------------------------------------------------
+		$this->core->set_vars(array(
+			'page_title'    => $this->user->lang('dynamictemplate').' '.$this->user->lang('dynamictemplate_main_settings'),
+			'template_path' => $this->pm->get_data('dynamictemplate', 'template_path'),
+			'template_file' => 'admin/main_settings.html',
+			'display'       => true
 		));
 	}
-
-	$this->tpl->assign_vars(array(
-		'KEY'		=> max($arrFields)+1,
-	));
-
-    // -- EQDKP ---------------------------------------------------------------
-    $this->core->set_vars(array(
-      'page_title'    => $this->user->lang('dynamictemplate').' '.$this->user->lang('dynamictemplate_main_settings'),
-      'template_path' => $this->pm->get_data('dynamictemplate', 'template_path'),
-      'template_file' => 'admin/main_settings.html',
-      'display'       => true
-    ));
-  }
 
 }
 registry::register('dynamictemplate_main_settings');
