@@ -32,7 +32,7 @@ if (!defined('EQDKP_INC'))
 class dynamictemplate extends plugin_generic
 {
 
-  public $version    = '2.0.0';
+  public $version    = '2.0.1';
   public $build      = '';
   public $copyright  = 'Nashara';
   public $vstatus    = 'Beta';
