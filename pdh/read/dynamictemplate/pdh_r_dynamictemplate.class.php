@@ -19,8 +19,7 @@
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-if (!defined('EQDKP_INC'))
-{
+if (!defined('EQDKP_INC')){
   die('Do not access this file directly.');
 }
 

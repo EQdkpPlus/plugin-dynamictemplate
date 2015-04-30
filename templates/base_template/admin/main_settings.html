@@ -1,18 +1,54 @@
 <script type="text/javascript">
-
-var id = {KEY};
-
-function delete_row(obj){
-	$(obj).parent().parent().remove();
-}
-
-function add_row(){
-	var new_row = $('#reference_row').html()+"";
-	new_row = new_row.replace(/KEY/g, id);
-	id = id + 1;
-	$("#dynamictemplate_form_table").find('tbody').append('<tr>'+new_row+'</tr>');
-}
-
+	var id = {KEY};
+	var import_data;
+	
+	$(document).ready(function() {
+		
+	});
+	
+	function add_row(){
+		var new_module = $('#reference_row').html()+"";
+		new_module = new_module.replace(/KEY/g, id);
+		$("#dynamictemplate_form_table").find('tbody').append('<tr>'+new_module+'</tr>');
+		id++;
+	}
+	function delete_row(obj){
+		$(obj).parent().parent().remove();
+	}
+	
+	function import_dialog(){
+		$('#dynamictemplate_export').dialog({
+			title: '{L_dynamictemplate_import}',
+			height: 'auto',
+			width: 600,
+			modal: true,
+			buttons: {
+				'{L_dynamictemplate_import_btn}': import_modules,
+				'{L_cancel}': function() {
+					$(this).dialog('destroy');
+				}
+			},
+			close: function(event, ui){
+				$(this).dialog('destroy');
+			}
+		});
+	}
+	
+	function import_modules(){
+		import_data = JSON.parse( $('#dynamictemplate_export_data').val() );
+		$.each(import_data, function(module, data){
+			var new_module = $('#reference_row').html()+"";
+			new_module = new_module.replace(/KEY/g, id);
+			$('#dynamictemplate_form_table').find('tbody').append('<tr>'+new_module+'</tr>');
+			
+			$('input[name="module['+id+'][active]"]').prop('checked', data['active']);
+			$('input[name="module['+id+'][name]"]').val(data['name']);
+			$('textarea[name="module['+id+'][value]"]').html(data['value']);
+			
+			id++;
+    	});
+		$('#dynamictemplate_export').dialog('destroy');
+	}
 </script>
 
 <!-- IF S_NORMAL_HEADER -->
@@ -20,7 +56,7 @@ function add_row(){
 	<ul class="breamcrumb">
 		<li><a href="{EQDKP_CONTROLLER_PATH}{SID}" title="{L_home}"><i class="fa fa-home"></i></a></li>
 		<li><a href="{EQDKP_ROOT_PATH}admin/{SID}">{L_menu_admin_panel}</a>
-		<li class="current"><a>{L_dynamictemplate}: {L_dynamictemplate_main_settings}</a></li>
+		<li class="current"><a href="">{L_dynamictemplate}: {L_dynamictemplate_main_settings}</a></li>
 	</ul>
 	<div class="clear"></div>
 </div>
@@ -32,9 +68,13 @@ function add_row(){
 <div class="infobox infobox-large infobox-blue clearfix">
 	<i class="fa fa-info-circle fa-3x pull-left"></i> {L_dynamictemplate_customcheck_info}
 </div>
-<br />
 
 <form name="dynamictemplate_settings" action="{ACTION}" method="post">
+	<div class="tableHeader floatRight">
+		<button type="button" onclick="add_row();"><i class="fa fa-plus"></i>{L_dynamictemplate_add_module}</button>
+		<button type="button" onclick="import_dialog();"><i class="fa fa-share-square-o fa-fw fa-lg"></i>{L_dynamictemplate_import_btn}</button>
+	</div>
+	<div class="clear"></div>
 	<table id="dynamictemplate_form_table" class="table fullwidth colorswitch">
 		<thead>
 		<tr class="not-sortable">
@@ -47,35 +87,40 @@ function add_row(){
 		</tr>
 		</thead>
 		<tbody>
-		<!-- BEGIN field_row -->
+		<!-- BEGIN modules -->
 		<tr>
 			<td><span class="ui-icon ui-icon-arrowthick-2-n-s" title="{L_dragndrop}"></span></td>
-			<td width="10px">#{field_row.KEY}</td>
-			<td align="center"><input type="hidden" name="field[{field_row.KEY}][id]" value="{field_row.KEY}" class="dynamictemplate_id"/><i class="fa fa-trash-o fa-lg" title="{L_dynamictemplate_delete_field}"  onclick="delete_row(this);"></i></td>
+			<td width="10px">#{modules.KEY}</td>
+			<td align="center"><input type="hidden" name="module[{modules.KEY}][id]" value="{modules.KEY}" class="dynamictemplate_id"/><i class="fa fa-trash-o fa-lg hand" title="{L_dynamictemplate_delete_module}"  onclick="delete_row(this);"></i></td>
 			
-			<td><input type="checkbox" name="field[{field_row.KEY}][active]" value="1" {field_row.ACTIVE}/></td>
-			<td>{DYNAMICTEMPLATE_<input type="text" name="field[{field_row.KEY}][name]" value="{field_row.NAME}" class="input dynamictemplate_name" />}</td>
-			<td><textarea name="field[{field_row.KEY}][value]" rows="4" class="input" style="height:{field_row.OPTIONS_HEIGHT}px;width: 97%;">{field_row.VALUE}</textarea></td>
+			<td><input type="checkbox" name="module[{modules.KEY}][active]" value="1" {modules.ACTIVE}/></td>
+			<td>{DYNAMICTEMPLATE_<input type="text" name="module[{modules.KEY}][name]" value="{modules.NAME}" class="input dynamictemplate_name" />}</td>
+			<td><textarea name="module[{modules.KEY}][value]" rows="4" class="input" style="height:{modules.OPTIONS_HEIGHT}px;width: 97%;">{modules.VALUE}</textarea></td>
 		</tr>
-		<!-- END field_row -->
+		<!-- END modules -->
 		</tbody>
 	</table>
 	<div class="contentFooter" style="height:40px">
 		<button type="submit" name="save"><i class="fa fa-check"></i>{L_save}</button>
-		<button type="button" onclick="add_row();"><i class="fa fa-plus"></i>{L_dynamictemplate_add_field}</button>
 	</div>
 	
 {CSRF_TOKEN}
 </form>
 
+<div id="dynamictemplate_export" style="display:none;">
+	<div class="infobox infobox-large infobox-blue clearfix">
+		<i class="fa fa-info-circle fa-4x pull-left"></i> {L_dynamictemplate_import_info}
+	</div>
+	<textarea id="dynamictemplate_export_data" name="export_data" cols="75" rows="10" onfocus="this.select();">{EXPORT_DATA}</textarea>
+</div>
 
 <table style="display:none;">
 	<tr id="reference_row">
 		<td><span class="ui-icon ui-icon-arrowthick-2-n-s" title="{L_dragndrop}"></span></td>
 		<td width="10px">#KEY</td>
-		<td align="center"><input type="hidden" name="field[KEY][id]" value="KEY" class="dynamictemplate_id" /><i class="fa fa-trash-o fa-lg" title="{L_delte}" onclick="delete_row(this);"></i></td>
-		<td><input type="checkbox" name="field[KEY][active]" value="1" /></td>
-		<td>{DYNAMICTEMPLATE_<input type="text" name="field[KEY][name]" value="" class="input dynamictemplate_name" style="width: 50%" />}</td>
-		<td><textarea name="field[KEY][value]" rows="4" class="input" style="height:{field_row.OPTIONS_HEIGHT}px;width: 97%;">{field_row.VALUE}</textarea></td>
+		<td align="center"><input type="hidden" name="module[KEY][id]" value="KEY" class="dynamictemplate_id" /><i class="fa fa-trash-o fa-lg" title="{L_delte}" onclick="delete_row(this);"></i></td>
+		<td><input type="checkbox" name="module[KEY][active]" value="1" /></td>
+		<td>{DYNAMICTEMPLATE_<input type="text" name="module[KEY][name]" value="" class="input dynamictemplate_name" />}</td>
+		<td><textarea name="module[KEY][value]" rows="4" class="input" style="height:{modules.OPTIONS_HEIGHT}px;width: 97%;">{modules.VALUE}</textarea></td>
 	</tr>
 </table>

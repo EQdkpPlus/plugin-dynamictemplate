@@ -59,7 +59,7 @@ class dynamictemplate extends plugin_generic
       'description'       => $this->user->lang('dynamictemplate_short_desc'),
       'long_description'  => $this->user->lang('dynamictemplate_long_desc'),
       'homepage'          => 'https://eqdkp-plus.eu/forum/index.php/User/476-assasinen/',
-      'manuallink'        => false,
+      'manuallink'        => 'https://eqdkp-plus.eu/wiki/Plugin:_Dynamic_Template',
       'plus_version'      => '2.0',
       'build'             => $this->build,
     ));
