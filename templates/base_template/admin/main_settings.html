@@ -46,6 +46,8 @@
 			
 			$('input[name="module['+id+'][active]"]').prop('checked', data['active']);
 			$('input[name="module['+id+'][name]"]').val(data['name']);
+			$('select[name="module['+id+'][listener]"]').val(data['listener']);
+			//$('textarea[name="module['+id+'][listener]"] option[value="'+data['listener']+'"]').prop('selected', true);
 			$('textarea[name="module['+id+'][value]"]').html(data['value']);
 			
 			id++;
@@ -97,7 +99,8 @@
 			<td align="center"><input type="hidden" name="module[{modules.KEY}][id]" value="{modules.KEY}" class="dynamictemplate_id"/><i class="fa fa-trash-o fa-lg hand" title="{L_dynamictemplate_delete_module}"  onclick="delete_row(this);"></i></td>
 			
 			<td><input type="checkbox" name="module[{modules.KEY}][active]" value="1" {modules.ACTIVE}/></td>
-			<td>{DYNAMICTEMPLATE_<input type="text" name="module[{modules.KEY}][name]" value="{modules.NAME}" class="input dynamictemplate_name" />}</td>
+			<td>{DYNAMICTEMPLATE_<input type="text" name="module[{modules.KEY}][name]" value="{modules.NAME}" class="input dynamictemplate_name" />}
+			<br />&lt;!-- LISTENER {modules.LISTENER} --&gt;</td>
 			<td><textarea name="module[{modules.KEY}][value]" rows="4" class="input" style="height:{modules.OPTIONS_HEIGHT}px;width: 97%;">{modules.VALUE}</textarea></td>
 		</tr>
 		<!-- END modules -->
@@ -121,9 +124,10 @@
 	<tr id="reference_row">
 		<td><span class="ui-icon ui-icon-arrowthick-2-n-s" title="{L_dragndrop}"></span></td>
 		<td width="10px">#KEY</td>
-		<td align="center"><input type="hidden" name="module[KEY][id]" value="KEY" class="dynamictemplate_id" /><i class="fa fa-trash-o fa-lg" title="{L_delte}" onclick="delete_row(this);"></i></td>
+		<td align="center"><input type="hidden" name="module[KEY][id]" value="KEY" class="dynamictemplate_id" /><i class="fa fa-trash-o fa-lg hand" title="{L_delte}" onclick="delete_row(this);"></i></td>
 		<td><input type="checkbox" name="module[KEY][active]" value="1" /></td>
-		<td>{DYNAMICTEMPLATE_<input type="text" name="module[KEY][name]" value="" class="input dynamictemplate_name" />}</td>
-		<td><textarea name="module[KEY][value]" rows="4" class="input" style="height:{modules.OPTIONS_HEIGHT}px;width: 97%;">{modules.VALUE}</textarea></td>
+		<td>{DYNAMICTEMPLATE_<input type="text" name="module[KEY][name]" value="" class="input dynamictemplate_name" />}
+		<br />&lt;!-- LISTENER {LISTENER} --&gt;</td>
+		<td><textarea name="module[KEY][value]" rows="4" class="input" style="height:{modules.OPTIONS_HEIGHT}px;width: 97%;"></textarea></td>
 	</tr>
 </table>

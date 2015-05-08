@@ -18,13 +18,9 @@
  *	You should have received a copy of the GNU Affero General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-if (!defined('EQDKP_INC'))
-{
-  header('HTTP/1.0 404 Not Found');
-  exit;
+if (!defined('EQDKP_INC')){
+	header('HTTP/1.0 404 Not Found');exit;
 }
-
 
 /*+----------------------------------------------------------------------------
   | dynamictemplate
@@ -32,7 +28,7 @@ if (!defined('EQDKP_INC'))
 class dynamictemplate extends plugin_generic
 {
 
-  public $version    = '2.0.1';
+  public $version    = '2.1.0';
   public $build      = '';
   public $copyright  = 'Nashara';
   public $vstatus    = 'Beta';
@@ -60,12 +56,12 @@ class dynamictemplate extends plugin_generic
       'long_description'  => $this->user->lang('dynamictemplate_long_desc'),
       'homepage'          => 'https://eqdkp-plus.eu/forum/index.php/User/476-assasinen/',
       'manuallink'        => 'https://eqdkp-plus.eu/wiki/Plugin:_Dynamic_Template',
-      'plus_version'      => '2.0',
+      'plus_version'      => '2.1',
       'build'             => $this->build,
     ));
 
     $this->add_dependency(array(
-      'plus_version'      => '2.0'
+      'plus_version'      => '2.1'
     ));
 
     // -- Register our permissions ------------------------

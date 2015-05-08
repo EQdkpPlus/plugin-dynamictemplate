@@ -42,7 +42,9 @@ if (!class_exists('dynamictemplate_portal_hook')){
 			
 			if($arrModuleData['active']){
 				$arrModuleData['value'] = xhtml_entity_decode(htmlspecialchars_decode($arrModuleData['value']));
-				$this->tpl->assign_var('DYNAMICTEMPLATE_'.$arrModuleData['name'], $this->tpl->compileString($arrModuleData['value']));
+				
+				if(!empty($arrModuleData['name']))	   $this->tpl->assign_var('DYNAMICTEMPLATE_'.$arrModuleData['name'], $this->tpl->compileString($arrModuleData['value']));
+				if(!empty($arrModuleData['listener'])) $this->tpl->add_listener($arrModuleData['listener'], $arrModuleData['value'], true);
 			}
 		}
 		

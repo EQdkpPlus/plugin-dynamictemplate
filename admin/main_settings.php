@@ -57,13 +57,13 @@ class dynamictemplate_main_settings extends page_generic
 		
 		$intSortID = 0;
 		foreach($arrModules as $arrModuleData){
-			if($arrModuleData['name'] == '') continue;
+			if($arrModuleData['name'] == '' && $arrModuleData['listener'] == '_') continue;
 			
 			$intActive	= (isset($arrModuleData['active']) && (int)$arrModuleData['active']) ? 1 : 0;
 			$strName	= strtoupper($arrModuleData['name']);
 			$strValue	= htmlentities($arrModuleData['value'], ENT_QUOTES, 'UTF-8');
 			
-			$this->pdh->put('dynamictemplate', 'add', array($arrModuleData['id'], $intSortID, $intActive, $strName, $strValue));
+			$this->pdh->put('dynamictemplate', 'add', array($arrModuleData['id'], $intSortID, $intActive, $strName, $arrModuleData['listener'], $strValue));
 			$intSortID++;
 		}
 		
@@ -82,7 +82,6 @@ class dynamictemplate_main_settings extends page_generic
 		$this->confirm_delete($this->user->lang('dynamictemplate_confirm_delete_module'));
 		
 		$arrModuleIDs = $arrExportData = $this->pdh->get('dynamictemplate', 'id_list');
-		
 		foreach($arrModuleIDs as $key => $id){
 			$arrExportData[$key] = $arrModuleData = $this->pdh->get('dynamictemplate', 'id', array($id));
 			
@@ -90,12 +89,14 @@ class dynamictemplate_main_settings extends page_generic
 				'KEY'				=> $arrModuleData['id'],
 				'ACTIVE'			=> ($arrModuleData['active']) ? 'checked="checked"' : '',
 				'NAME'				=> $arrModuleData['name'],
+				'LISTENER'			=> new hdropdown('listener', array('options' => $this->user->lang('dynamictemplate_listener'), 'value' => $arrModuleData['listener'], 'name' => 'module['.$arrModuleData['id'].'][listener]')),
 				'VALUE'				=> xhtml_entity_decode(htmlspecialchars_decode($arrModuleData['value'])),
 			));
 		}
 		
 		$this->tpl->assign_vars(array(
 			'KEY'			=> max($arrModuleIDs)+1,
+			'LISTENER'		=> new hdropdown('listener', array('options' => $this->user->lang('dynamictemplate_listener'), 'value' => '', 'name' => 'module[KEY][listener]')),
 			'EXPORT_DATA'	=> json_encode($arrExportData, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE),
 		));
 		
