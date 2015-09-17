@@ -28,12 +28,12 @@ if (!defined('EQDKP_INC')){
 class dynamictemplate extends plugin_generic
 {
 
-  public $version    = '2.1.0';
+  public $version    = '2.2.0';
   public $build      = '';
-  public $copyright  = 'Nashara';
+  public $copyright  = 'Asitara';
   public $vstatus    = 'Beta';
 
-  protected static $apiLevel = 20;
+  protected static $apiLevel = 23;
 
   /**
     * Constructor
