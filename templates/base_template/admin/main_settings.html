@@ -21,13 +21,13 @@
 	
 	function import_dialog(){
 		$('#dynamictemplate_export').dialog({
-			title: '{L_dynamictemplate_import}',
+			title: {L_dynamictemplate_import|jsencode},
 			height: 'auto',
 			width: 600,
 			modal: true,
 			buttons: {
-				'{L_dynamictemplate_import_btn}': import_modules,
-				'{L_cancel}': function() {
+				{L_dynamictemplate_import_btn|jsencode}: import_modules,
+				{L_cancel|jsencode}: function() {
 					$(this).dialog('destroy');
 				}
 			},
