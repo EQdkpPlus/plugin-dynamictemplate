@@ -89,14 +89,14 @@ class dynamictemplate_main_settings extends page_generic
 				'KEY'				=> $arrModuleData['id'],
 				'ACTIVE'			=> ($arrModuleData['active']) ? 'checked="checked"' : '',
 				'NAME'				=> $arrModuleData['name'],
-				'LISTENER'			=> new hdropdown('listener', array('options' => $this->user->lang('dynamictemplate_listener'), 'value' => $arrModuleData['listener'], 'name' => 'module['.$arrModuleData['id'].'][listener]')),
+				'LISTENER'			=> (new hdropdown('listener', array('options' => $this->user->lang('dynamictemplate_listener'), 'value' => $arrModuleData['listener'], 'name' => 'module['.$arrModuleData['id'].'][listener]')))->output(),
 				'VALUE'				=> xhtml_entity_decode(htmlspecialchars_decode($arrModuleData['value'])),
 			));
 		}
 		
 		$this->tpl->assign_vars(array(
 			'KEY'			=> max($arrModuleIDs)+1,
-			'LISTENER'		=> new hdropdown('listener', array('options' => $this->user->lang('dynamictemplate_listener'), 'value' => '', 'name' => 'module[KEY][listener]')),
+			'LISTENER'		=> (new hdropdown('listener', array('options' => $this->user->lang('dynamictemplate_listener'), 'value' => '', 'name' => 'module[KEY][listener]')))->output(),
 			'EXPORT_DATA'	=> json_encode($arrExportData, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE),
 		));
 		
