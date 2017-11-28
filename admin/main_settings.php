@@ -105,6 +105,10 @@ class dynamictemplate_main_settings extends page_generic
 			'page_title'    => $this->user->lang('dynamictemplate').' '.$this->user->lang('dynamictemplate_main_settings'),
 			'template_path' => $this->pm->get_data('dynamictemplate', 'template_path'),
 			'template_file' => 'admin/main_settings.html',
+			'page_path'		=> [
+				['title'=>$this->user->lang('menu_admin_panel'), 'url'=>$this->root_path.'admin/'.$this->SID],
+				['title'=>$this->user->lang('dynamictemplate'), 'url'=>' '],
+			],
 			'display'       => true
 		));
 	}
