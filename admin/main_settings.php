@@ -95,7 +95,8 @@ class dynamictemplate_main_settings extends page_generic
 		}
 		
 		$this->tpl->assign_vars(array(
-			'KEY'			=> max($arrModuleIDs)+1,
+			//'KEY'			=> max($arrModuleIDs)+1,
+			'KEY'			=> (empty($arrModuleIDs) ? 1 : max($arrModuleIDs) + 1),
 			'LISTENER'		=> (new hdropdown('listener', array('options' => $this->user->lang('dynamictemplate_listener'), 'value' => '', 'name' => 'module[KEY][listener]')))->output(),
 			'EXPORT_DATA'	=> json_encode($arrExportData, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE),
 		));
